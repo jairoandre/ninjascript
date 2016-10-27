@@ -92,7 +92,7 @@ function getDocument(req, res, next, model) {
     var id = req.params.id;
     Model.findById(id, (err, _inst) => {
       if (err) {
-        next(`Could not find the document for the passed id[${}]`);
+        next(`Could not find the document for the passed id[${id}]`);
       } else {
         res.send(_inst);
       }
