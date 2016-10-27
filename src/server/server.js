@@ -21,7 +21,7 @@ function initApp() {
   });
 
   app.get('/favicon.ico', function(req, res) {
-    res.sendFile(path.join(__dirname,'..','..','/publick/favicon.ico'));
+    res.sendFile(path.join(__dirname,'..','..','/public/favicon.ico'));
   });
 
   app.listen(3000, function() {
