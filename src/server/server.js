@@ -20,6 +20,10 @@ function initApp() {
     res.sendFile(path.join(__dirname,'..','..','index.html'));
   });
 
+  app.get('/favicon.ico', function(req, res) {
+    res.sendFile(path.join(__dirname,'..','..','/publick/favicon.ico'));
+  });
+
   app.listen(3000, function() {
     console.log('Running app listening on port 3000.');
   });
