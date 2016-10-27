@@ -10,6 +10,8 @@ function initApp() {
 
   let apiRouter = getRouter();
 
+  app.set('port', (process.env.PORT || 3000));
+
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended: true}));
 
@@ -24,8 +26,8 @@ function initApp() {
     res.sendFile(path.join(__dirname,'..','..','/public/favicon.ico'));
   });
 
-  app.listen(3000, function() {
-    console.log('Running app listening on port 3000.');
+  app.listen(app.get('port'), function() {
+    console.log(`Running app listening on port ${app.get('port')}.`);
   });
 
 }
