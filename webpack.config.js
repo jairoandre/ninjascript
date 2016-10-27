@@ -1,6 +1,7 @@
 var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var CleanWebpackPlugin = require('clean-webpack-plugin');
 
 console.log("WEBPACK GO!");
 
@@ -37,7 +38,7 @@ if (TARGET_ENV === 'development') {
   var developmentConfig = {
 
     entry: [
-        'webpack-dev-server/client?http://localhost:9090/',
+        'webpack-dev-server/client?http://localhost:8080/',
         path.join(__dirname, 'src/index.js')
     ],
 
@@ -52,6 +53,7 @@ if (TARGET_ENV === 'development') {
     },
 
     plugins: [
+			new CleanWebpackPlugin(['public']),
       new HtmlWebpackPlugin({
         title: 'NinjaScript - Development',
         template: './src/index.ejs',
@@ -76,16 +78,16 @@ if (TARGET_ENV === 'production') {
     entry: './src/index.js',
 
     output : {
-      path: './dist',
+      path: './public',
       filename: 'bundle.[hash].js'
     },
 
     plugins:
         [
-          new HtmlWebpackPlugin({
+					new HtmlWebpackPlugin({
             title: 'NinjaScript - Production',
             template: './src/index.ejs',
-            filename: './dist/index.html'}),
+            filename: '../index.html'}),
           new ExtractTextPlugin("bundle.[hash].css")
         ]
 
