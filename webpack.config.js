@@ -1,4 +1,5 @@
 var path = require('path');
+var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -6,6 +7,14 @@ var CleanWebpackPlugin = require('clean-webpack-plugin');
 console.log("WEBPACK GO!");
 
 var TARGET_ENV = process.env.npm_lifecycle_event === 'build' ? 'production' : 'development';
+
+var sassLoader = [
+  'css-loader',
+	'postcss-loader',
+  'sass-loader?sourceMap&outputStyle=expanded&' +
+  'includePaths[]=' +
+  (encodeURIComponent(path.resolve(process.cwd(), './node_modules')))
+];
 
 var defaultConfig = {
 	module: {
@@ -15,7 +24,7 @@ var defaultConfig = {
 					path.resolve(__dirname, 'node_modules'),
 					path.resolve(__dirname, 'src')
 				],
-	      extensions: ['', '.js', '.scss']
+	      extensions: ['', '.js', '.scss', '.less']
 	    },
       loaders: [
         {
@@ -26,9 +35,15 @@ var defaultConfig = {
         {
           test: /\.less?$/,
           loader: ExtractTextPlugin.extract("style-loader", "css-loader!postcss-loader!less-loader")
+        },
+				{
+          test: /\.scss?$/,
+          loader: ExtractTextPlugin.extract("style-loader", sassLoader.join('!'))
         }
       ]
-    }
+    },
+
+  	postcss: [ autoprefixer( { browsers: ['last 2 versions'] } ) ]
 };
 
 
@@ -53,7 +68,7 @@ if (TARGET_ENV === 'development') {
     },
 
     plugins: [
-			new CleanWebpackPlugin(['public']),
+			new CleanWebpackPlugin(['public/dist']),
       new HtmlWebpackPlugin({
         title: 'NinjaScript - Development',
         template: './src/index.ejs',
@@ -78,7 +93,7 @@ if (TARGET_ENV === 'production') {
     entry: './src/index.js',
 
     output : {
-      path: './public',
+      path: './public/dist',
       filename: 'bundle.[hash].js'
     },
 
@@ -87,7 +102,7 @@ if (TARGET_ENV === 'production') {
 					new HtmlWebpackPlugin({
             title: 'NinjaScript - Production',
             template: './src/index.ejs',
-            filename: '../index.html'}),
+            filename: '../../index.html'}),
           new ExtractTextPlugin("bundle.[hash].css")
         ]
 

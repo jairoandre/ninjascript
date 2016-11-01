@@ -6,12 +6,12 @@ import { getPostModel } from './models/post';
 export function getRouter() {
   var router = express.Router();
 
-  router.route('/users').get(getUsers);
+  router.route('/users/list').get(getUsers);
   router.route('/users/add').post(addUser);
-  router.route('/users/:id').get(getUser);
+  router.route('/users/get/:id').get(getUser);
   router.route('/posts').get(getPosts);
   router.route('/posts/add').post(addPost);
-  router.route('/posts/:id').get(getPost);
+  router.route('/posts/get/:id').get(getPost);
 
   return router;
 }
@@ -42,6 +42,7 @@ function addDocument(req, res, next, model) {
   conn.once('open', function() {
     var Model = model();
     var data = req.body;
+    console.log(data);
     var instance = new Model(data);
     instance.save(function(err, _inst) {
       if (err) {
